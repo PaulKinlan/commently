@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2007 Google Inc.
+# Copyright 2011 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
+import comment
+
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -24,7 +26,10 @@ class MainHandler(webapp.RequestHandler):
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
+    application = webapp.WSGIApplication([
+      ('/', MainHandler),
+      ('/lib/comments.js', comment.CommentHandler)
+      ],
                                          debug=True)
     util.run_wsgi_app(application)
 
