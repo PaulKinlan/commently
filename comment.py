@@ -93,7 +93,7 @@ class JSCommentHandler(CommentHandler):
     if not callback:
       output = responsedata
     else:
-      output = "if(%s) { %s(%s); }" % (callback, callback, responsedata))
+      output = "if(%s) { %s(%s); }" % (callback, callback, responsedata)
     
     self.response.headers["Content-Type"] = "application/javascript"
     self.response.out.write(output)

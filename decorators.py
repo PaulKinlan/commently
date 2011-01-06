@@ -25,7 +25,7 @@ def cors(func):
   '''
   Enables CORS on WebRequests
   '''
-  @functools.wraps(func):
+  @functools.wraps(func)
   def wrapper(self, *args, **kwargs):
     self.response.headers["Access-Control-Allow-Origin"] = "*"
     return func(self, *args, **kwargs)
