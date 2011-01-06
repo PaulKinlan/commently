@@ -1,5 +1,5 @@
 <div id="comments">
-  {% for reply in replies.data.items %}
+  {% for reply in object.comments %}
   <div class="buzz-comment">
     <img src="{{reply.actor.thumbnailUrl}}" class="buzz-actor">
     <div class="buzz-name"><a href="{{reply.actor.name}}">{{reply.actor.profileUrl}}</a></div>

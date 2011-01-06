@@ -33,8 +33,17 @@ class BuzzProcess(object):
     return self.Fetch(settings.BUZZ_ACTIVITIES % (username))
   
   def Fetch(self, url):
-    logging.info(url + "&" + settings.API_KEY)
-    result = urlfetch.fetch(url + "&key=" + settings.API_KEY)
+    
+    params = {
+      "alt" : "json",
+      "max-results" : settings.MAX_FETCH,
+      "max-comments" : settings.MAX_FETCH,
+      "max-liked" : settings.MAX_FETCH,
+      "key" : settings.API_KEY
+    }
+    requestUrl = url + "&" + urllib.urlencode(params)
+    logging.info(requestUrl)
+    result = urlfetch.fetch(requestUrl)
     data = result.content
     return simplejson.loads(data)
   
@@ -69,10 +78,6 @@ class CommentHandler(webapp.RequestHandler):
     process = BuzzProcess()
     
     activity = process.FindActivity(username, title)
-    
-    if activity:
-      activity.update({"likes" : process.GetLikes(activity)})
-      activity.update({"replies": process.GetReplies(activity)})
     
     return activity
 

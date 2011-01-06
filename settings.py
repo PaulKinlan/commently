@@ -28,7 +28,7 @@ MAX_FETCH = 500
 SHOULD_VERIFY_INCOMING_POSTS = False
 
 # Buzz API endpoint
-BUZZ_ACTIVITIES = "https://www.googleapis.com/buzz/v1/activities/%s/@public?alt=json"
+BUZZ_ACTIVITIES = "https://www.googleapis.com/buzz/v1/activities/%s/@public?"
 
 
 # Installation specific config ends.

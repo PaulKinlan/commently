@@ -3,7 +3,7 @@
   <head>
     <script>
       var handler = function(data) {
-        var replies = data.replies.data.items;
+        var replies = data.object.comments;
         var commentsContainer = document.getElementById("comments");
         
         for(var r in replies) {
@@ -112,7 +112,7 @@
   <h2>The code for this page</h2>
   <pre><code>&lt;script&gt;
   var handler = function(data) {
-    var replies = data.replies.data.items;
+    var replies = data.object.comments;
     var commentsContainer = document.getElementById("comments");
     
     for(var r in replies) {
