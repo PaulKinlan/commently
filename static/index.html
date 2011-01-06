@@ -8,6 +8,50 @@
     </script>
     <script src="/lib/comments.js?title=2010:%20So,%20that%20happened&username=adewale&callback=handler">
     </script>
-    
   </head>
+  <body>
+    <h1>Commently</h1>
+    <p>
+      Maybyly I am taking the naming too far, but this is a simple service that
+      allows you to embed comments into your blogging platform.
+    </p>
+    <p>
+      The comments are synchronized with Buzz based on the feed that you push
+      to Buzz.
+    </p>
+    <p>
+      It is super simple to start, simply embed the following javascript into 
+      your blog or website
+    </p>
+    <h2>The 10 second "Getting Started" guide</h2>
+    <pre><code>&lt;script&gt;
+  var handler = function(data) {
+    // data is an Buzz activity
+    
+    // data.replies is a list of the replies to the thread
+    
+    // data.likes is a list of the user likes on the thread
+  };
+&lt;/script&gt;
+&lt;script src="/lib/comments.js?title=[Blog Title]&username=[Username]&callback=handler"&gt;
+&lt;/script&gt;</code></pre>
+  <p>
+    Simply replace <em>[Username]</em> with your buzz name (paul.kinlan in my
+    case); replace [Blog Title] with a url encoded title of your article as it
+    appears in your ATOM or RSS feed; fill out the "handler" function with logic
+    to construct a nice looking area for the comments.
+  </p>
+  <h2>The code for this page</h2>
+  <pre><code>&lt;script&gt;
+  var handler = function(data) {
+    // data is an Buzz activity
+
+    // data.replies is a list of the replies to the thread
+
+    // data.likes is a list of the user likes on the thread
+  };
+&lt;/script&gt;
+&lt;script src="/lib/comments.js?title=[Blog Title]&username=[Username]&callback=handler"&gt;
+&lt;/script&gt;</code></pre>
+  </body>
 </html>

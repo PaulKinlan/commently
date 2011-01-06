@@ -27,26 +27,31 @@ import urllib
 
 class BuzzProcess(object):
   
-  def FetchData(self, username, title):
+  def FetchData(self, username):
     return self.Fetch(settings.BUZZ_ACTIVITIES % (username))
     
   def Fetch(self, url):
-    result = urlfetch.fetch(url)
-    return simplejson.loads(result.content)
+    logging.info(url + "&" + settings.API_KEY)
+    result = urlfetch.fetch(url + "&key=" + settings.API_KEY)
+    data = result.content
+    return simplejson.loads(data)
   
   #@decorators.cache
   def FindActivity(self, username, title):
-    activities = self.FetchData(username, title)
+    activities = self.FetchData(username)
+    
+    if not activities and not activities["data"]:
+      return None
+    
     data = activities["data"]["items"];
     for activity in data:
-      logging.info(activity["title"])
       if activity["title"] == title:
         return activity
     return None
   
   #@decorators.cache("likes", 10)
   def GetLikes(self, activity):
-    url = activity["links"]["liked"][0]["href"]
+    url = activity["links"]["liked"][0]["href"] 
     return self.Fetch(url)
     
   #@decorators.cache("replies", 10)
