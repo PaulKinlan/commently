@@ -13,5 +13,5 @@ handlers:
 - url: /favicon.ico
   static_files: static/favicon.ico
   upload: static/favicon.ico
-- url: /lib/comments.js
+- url: /lib/comments.(js|html)
   script: main.py

@@ -24,9 +24,10 @@
           actor.src = reply.actor.thumbnailUrl;
           actor.className = "buzz-actor";
           
-          commentsContainer.appendChild(actor);
-          commentsContainer.appendChild(name);
-          commentsContainer.appendChild(content);
+          commentElement.appendChild(actor);
+          commentElement.appendChild(name);
+          commentElement.appendChild(content);
+          commentElement.appendChild(document.createElement("br"));
           
           commentsContainer.appendChild(commentElement);
         }
@@ -34,6 +35,11 @@
     </script>
     <style>
       .buzz-comment {
+        clear:both;
+        margin-bottom: 3px;
+      }
+      
+      .buzz-comment br {
         clear:both;
       }
       
@@ -67,6 +73,10 @@
       It is super simple to start, simply embed the following javascript into 
       your blog or website
     </p>
+    <h2>Get the Source</h2>
+    <p>
+      All of the source is available on GitHub at <a href="https://github.com/PaulKinlan/commently">https://github.com/PaulKinlan/commently</a>. Fork to your hearts content!
+    </p>
     <h2>The 10 second "Getting Started" guide</h2>
     <pre><code>&lt;script&gt;
   var handler = function(data) {
@@ -84,6 +94,20 @@
     case); replace [Blog Title] with a url encoded title of your article as it
     appears in your ATOM or RSS feed; fill out the "handler" function with logic
     to construct a nice looking area for the comments.
+  </p>
+  <h2>Server-side Embed</h2>
+  <p>
+    It is possible to use the JS code on the server side of your application or
+    blog, but what if you want to simply get some HTML rather than mess about
+    with JS objects?
+  </p>
+  <p>
+    Luckily, that is possible too, simply change the <code>.js</code> to
+    <code>.html</code> to get a nice an clean HTML representation of the
+    comments with sensible CSS class-names so that you can style it up easily.
+  </p>
+  <p>
+    See a demo <a href="/lib/comments.html?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&username=paul.kinlan" target="_blank">here</a>
   </p>
   <h2>The code for this page</h2>
   <pre><code>&lt;script&gt;

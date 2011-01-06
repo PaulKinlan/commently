@@ -19,18 +19,11 @@ from google.appengine.ext.webapp import util
 
 import comment
 
-
-class MainHandler(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write('Hello world!')
-
-
 def main():
     application = webapp.WSGIApplication([
-      ('/', MainHandler),
-      ('/lib/comments.js', comment.CommentHandler)
-      ],
-                                         debug=True)
+      ('/lib/comments.js', comment.JSCommentHandler),
+      ('/lib/comments.html', comment.HTMLCommentHandler)
+      ], debug=True)
     util.run_wsgi_app(application)
 
 

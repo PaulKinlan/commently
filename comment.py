@@ -18,12 +18,14 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
 from google.appengine.api import urlfetch
+from google.appengine.ext.webapp import template
 
 import simplejson
 import settings
 import decorators
 import logging
 import urllib
+import os
 
 class BuzzProcess(object):
   
@@ -58,14 +60,29 @@ class BuzzProcess(object):
   def GetReplies(self, activity):
     url = activity["links"]["replies"][0]["href"]
     return self.Fetch(url)
-
+    
+    
 class CommentHandler(webapp.RequestHandler):
-  def get(self):
+  def getActivity(self, username, title):
+    activity = {}
+    
+    process = BuzzProcess()
+    
+    activity = process.FindActivity(username, title)
+    
+    if activity:
+      activity.update({"likes" : process.GetLikes(activity)})
+      activity.update({"replies": process.GetReplies(activity)})
+    
+    return activity
+
+class JSCommentHandler(CommentHandler):
+  def get(self, extension = "js"):
     title = urllib.unquote(self.request.get("title"))
     username = self.request.get("username")
     callback = self.request.get("callback")
     
-    process = BuzzProcess()
+    
     
     activity = {}
     
@@ -73,11 +90,20 @@ class CommentHandler(webapp.RequestHandler):
     if not callback:
       callback = "(function() {})();"
     else:
-      activity = process.FindActivity(username, title)
-      if activity:
-        activity.update({"likes" : process.GetLikes(activity)})
-        activity.update({"replies": process.GetReplies(activity)})
+      activity = self.getActivity(username, title)
     
     responsedata = simplejson.dumps(activity)
     self.response.headers["Content-Type"] = "application/javascript"
     self.response.out.write("if(%s) { %s(%s); }" % (callback, callback, responsedata))
+    
+class HTMLCommentHandler(CommentHandler):
+  def get(self, extension = "js"):
+    title = urllib.unquote(self.request.get("title"))
+    username = self.request.get("username")
+   
+    activity = self.getActivity(username, title)
+    
+    self.response.headers["Content-Type"] = "text/html"
+    path = os.path.join(os.path.dirname(__file__), "templates" ,'comments.tmpl')
+    output = template.render(path, activity)
+    self.response.out.write(output)
