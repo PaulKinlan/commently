@@ -31,14 +31,14 @@ class BuzzProcess(object):
   
   def FetchData(self, username):
     return self.Fetch(settings.BUZZ_ACTIVITIES % (username))
-    
+  
   def Fetch(self, url):
     logging.info(url + "&" + settings.API_KEY)
     result = urlfetch.fetch(url + "&key=" + settings.API_KEY)
     data = result.content
     return simplejson.loads(data)
   
-  #@decorators.cache
+  @decorators.cache("BuzzProcess.FindActivity")
   def FindActivity(self, username, title):
     activities = self.FetchData(username)
     
@@ -51,12 +51,12 @@ class BuzzProcess(object):
         return activity
     return None
   
-  #@decorators.cache("likes", 10)
+  @decorators.cache("BuzzProcess.GetLikes")
   def GetLikes(self, activity):
     url = activity["links"]["liked"][0]["href"] 
     return self.Fetch(url)
     
-  #@decorators.cache("replies", 10)
+  @decorators.cache("BuzzProcess.GetReplies")
   def GetReplies(self, activity):
     url = activity["links"]["replies"][0]["href"]
     return self.Fetch(url)
@@ -81,8 +81,6 @@ class JSCommentHandler(CommentHandler):
     title = urllib.unquote(self.request.get("title"))
     username = self.request.get("username")
     callback = self.request.get("callback")
-    
-    
     
     activity = {}
     
