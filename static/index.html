@@ -3,11 +3,55 @@
   <head>
     <script>
       var handler = function(data) {
+        var replies = data.replies.data.items;
+        var commentsContainer = document.getElementById("comments");
         
+        for(var r in replies) {
+          var reply = replies[r];
+          var commentElement = document.createElement("div");
+          commentElement.className = "buzz-comment"
+          
+          var content = document.createElement("div");
+          content.textContent = reply.content;
+          content.className = "buzz-content";
+          
+          
+          var name = document.createElement("div");
+          name.textContent = reply.actor.name;
+          name.className = "buzz-name";
+          
+          var actor = new Image();
+          actor.src = reply.actor.thumbnailUrl;
+          actor.className = "buzz-actor";
+          
+          commentsContainer.appendChild(actor);
+          commentsContainer.appendChild(name);
+          commentsContainer.appendChild(content);
+          
+          commentsContainer.appendChild(commentElement);
+        }
       };
     </script>
-    <script src="/lib/comments.js?title=2010:%20So,%20that%20happened&username=adewale&callback=handler">
-    </script>
+    <style>
+      .buzz-comment {
+        clear:both;
+      }
+      
+      .buzz-actor {
+        float:left;
+        width: 64px;
+        height: 64px;
+        margin: 0px 5px 0px 0px;
+      }
+      
+      .buzz-name {
+        font-weight: bold;
+      }
+      
+      .buzz-content {
+        
+      }
+    </style>
   </head>
   <body>
     <h1>Commently</h1>
@@ -44,14 +88,41 @@
   <h2>The code for this page</h2>
   <pre><code>&lt;script&gt;
   var handler = function(data) {
-    // data is an Buzz activity
-
-    // data.replies is a list of the replies to the thread
-
-    // data.likes is a list of the user likes on the thread
+    var replies = data.replies.data.items;
+    var commentsContainer = document.getElementById("comments");
+    
+    for(var r in replies) {
+      var reply = replies[r];
+      var commentElement = document.createElement("div");
+      commentElement.className = "buzz-comment"
+      
+      var content = document.createElement("div");
+      content.textContent = reply.content;
+      content.className = "buzz-content";
+      
+      var name = document.createElement("div");
+      name.textContent = reply.actor.name;
+      name.className = "buzz-name";
+      
+      var actor = new Image();
+      actor.src = reply.actor.thumbnailUrl;
+      actor.className = "buzz-actor";
+      
+      commentsContainer.appendChild(actor);
+      commentsContainer.appendChild(name);
+      commentsContainer.appendChild(content);
+      
+      commentsContainer.appendChild(commentElement);
+    }
   };
 &lt;/script&gt;
 &lt;script src="/lib/comments.js?title=[Blog Title]&username=[Username]&callback=handler"&gt;
 &lt;/script&gt;</code></pre>
+  <h2>Comments for this page</h2>
+  <div id="comments">
+    
+  </div>
   </body>
+  <script defer src="/lib/comments.js?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&username=paul.kinlan&callback=handler">
+  </script>
 </html>
