@@ -77,24 +77,29 @@ class CommentHandler(webapp.RequestHandler):
     return activity
 
 class JSCommentHandler(CommentHandler):
+  @decorators.cors
   def get(self, extension = "js"):
     title = urllib.unquote(self.request.get("title"))
     username = self.request.get("username")
     callback = self.request.get("callback")
     
-    activity = {}
+    output = "{}"
     
-    # if there is no callback use an empty handler
-    if not callback:
-      callback = "(function() {})();"
-    else:
-      activity = self.getActivity(username, title)
-    
+    activity = self.getActivity(username, title)
     responsedata = simplejson.dumps(activity)
+    
+    # if there is no callback is specifed just return the data, XHR/CORS might
+    # be being used.
+    if not callback:
+      output = responsedata
+    else:
+      output = "if(%s) { %s(%s); }" % (callback, callback, responsedata))
+    
     self.response.headers["Content-Type"] = "application/javascript"
-    self.response.out.write("if(%s) { %s(%s); }" % (callback, callback, responsedata))
+    self.response.out.write(output)
     
 class HTMLCommentHandler(CommentHandler):
+  @decorators.cors
   def get(self, extension = "js"):
     title = urllib.unquote(self.request.get("title"))
     username = self.request.get("username")

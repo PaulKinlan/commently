@@ -18,3 +18,16 @@ def cache(name = "", timeout = 10):
       return result
     return wrapper
   return factory
+  
+  
+  
+def cors(func):
+  '''
+  Enables CORS on WebRequests
+  '''
+  @functools.wraps(func):
+  def wrapper(self, *args, **kwargs):
+    self.response.headers["Access-Control-Allow-Origin"] = "*"
+    return func(self, *args, **kwargs)
+  
+  return wrapper
