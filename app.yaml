@@ -15,3 +15,6 @@ handlers:
   upload: static/favicon.ico
 - url: /lib/comments.(js|html)
   script: main.py
+- url: /tasks/activity/subscribe
+  script: tasks.py
+  login: admin

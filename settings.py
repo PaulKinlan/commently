@@ -13,7 +13,12 @@ SECRET_TOKEN = "SOME_SECRET_TOKEN"
 ALWAYS_USE_DEFAULT_HUB = False
 
 # What PSHB hub should we use for feeds that don't support PSHB. pollinghub.appspot.com is a hub I've set up that does polling.
-DEFAULT_HUB = "http://pollinghub.appspot.com/"
+DEFAULT_HUB = "http://pubsubhubbub.appspot.com/"
+
+# Each Buzz Activity is a pretty static URL.
+ACTIVITY_URL = "https://www.googleapis.com/buzz/v1/activities/%s/@self/%s/@comments"
+
+CALLBACK_URL = "/pubsub/callback"
 
 # Should anyone be able to add/delete subscriptions or should access be restricted to admins
 OPEN_ACCESS = False

@@ -16,6 +16,7 @@
 #
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
+from google.appengine.api import taskqueue
 
 from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import template
@@ -26,6 +27,7 @@ import decorators
 import logging
 import urllib
 import os
+import model
 
 class BuzzProcess(object):
   
@@ -43,12 +45,25 @@ class BuzzProcess(object):
     }
     requestUrl = url + "&" + urllib.urlencode(params)
     logging.info(requestUrl)
-    result = urlfetch.fetch(requestUrl)
+    result = urlfetch.fetch(requestUrl, deadline = 30)
     data = result.content
     return simplejson.loads(data)
   
   @decorators.cache("BuzzProcess.FindActivity")
   def FindActivity(self, username, title):
+    '''
+    Finds an activity, once it is in the datastore, we never fetch it again,
+    rather we subscribe to its pubsub feed.
+    '''
+    
+    # get activity from data store,
+    activity = model.Activity.Get(username, title)
+    
+    if activity:
+      return simplejson.loads(activity.data)
+    
+    # nothing in the datastore, so lets fetch it.
+    
     activities = self.FetchData(username)
     
     if not activities and not activities["data"]:
@@ -56,8 +71,22 @@ class BuzzProcess(object):
     
     data = activities["data"]["items"];
     for activity in data:
+      # This is litterally the first bit that can't be done in JSONp
       if activity["title"] == title:
+        # Save the data for 
+        model.Activity.Put(username, title, activity)
+        
+        # Send off a task to handle pubsub
+        taskqueue.add(queue_name = "subscribe",
+          url='/tasks/activity/subscribe',
+          params={ 
+            "id" : activity["id"],
+            "username" : username,
+            "title" : title
+          })
+        
         return activity
+    
     return None
   
   @decorators.cache("BuzzProcess.GetLikes")
