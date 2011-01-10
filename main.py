@@ -18,11 +18,15 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
 import comment
+import tasks
+import pubsub
 
 def main():
     application = webapp.WSGIApplication([
       ('/lib/comments.js', comment.JSCommentHandler),
-      ('/lib/comments.html', comment.HTMLCommentHandler)
+      ('/lib/comments.html', comment.HTMLCommentHandler),
+      ('/tasks/feed/subscribe', tasks.PubsubSubscribeHandler),
+      ('/pubsub/callback', pubsub.PubsubHandler)
       ], debug=True)
     util.run_wsgi_app(application)
 

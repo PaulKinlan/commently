@@ -107,7 +107,7 @@
     comments with sensible CSS class-names so that you can style it up easily.
   </p>
   <p>
-    See a demo <a href="/lib/comments.html?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&username=paul.kinlan" target="_blank">here</a>
+    See a demo <a href="/lib/comments.html?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&actor.profileUrl=http://www.google.com/profiles/paul.kinlan&callback=handler" target="_blank">here</a>
   </p>
   <h2>The code for this page</h2>
   <pre><code>&lt;script&gt;
@@ -140,13 +140,13 @@
     }
   };
 &lt;/script&gt;
-&lt;script src="/lib/comments.js?title=[Blog Title]&username=[Username]&callback=handler"&gt;
+&lt;script src="/lib/comments.js?title=[Blog Title]&actor.profileUrl=http://www.google.com/profiles/[Username]&callback=handler"&gt;
 &lt;/script&gt;</code></pre>
   <h2>Comments for this page</h2>
   <div id="comments">
     
   </div>
   </body>
-  <script defer src="/lib/comments.js?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&username=paul.kinlan&callback=handler">
+  <script defer src="/lib/comments.js?title=Test%20post%20for%20a%20Buzz%20based%20Blog Commenting%20system&actor.profileUrl=http://www.google.com/profiles/paul.kinlan&callback=handler">
   </script>
 </html>

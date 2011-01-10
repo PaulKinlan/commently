@@ -35,12 +35,11 @@ class PubsubSubscribeHandler(webapp.RequestHandler):
     '''
     We handle all requests to subscribe to an activity here
     '''
-    id = self.request.get("id")
-    username = self.request.get("username")
-    title = self.request.get("title")
+    url = self.request.get("url")
     
-    url = settings.ACTIVITY_URL % (username, id)
     hub = settings.DEFAULT_HUB
+    
+    logging.info(url)
     
     subscriber = HubSubscriber()
     subscriber.subscribe(url, hub, settings.CALLBACK_URL)
