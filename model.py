@@ -8,28 +8,42 @@ class Activity(db.Model):
   Key - id
   '''
   id = db.StringProperty()
+  shortcut = db.StringProperty()
+  username = db.StringProperty()
   data = db.TextProperty()
+  title = db.StringProperty()
   last_updated = db.DateTimeProperty(auto_now = True)
+  url = db.StringProperty()
+  replies_url = db.StringProperty()
+  likes_url = db.StringProperty()
   
   @staticmethod
-  def Get(username, title):
+  def Get(*args, **kwargs):
+    q = db.Query(Activity)
     
-    m = hashlib.md5()
-    m.update(username + title)
-    key = m.hexdigest()
+    # build the filter dynamically, have to watch out for index errors.
+    for key in kwargs:
+      q = q.filter("%s =" % key, kwargs[key])
     
-    return Activity.get_by_key_name(key)
+    return q.get()
     
   @staticmethod
-  def Put(username, title, activity):
+  def Put(activity):
     
     m = hashlib.md5()
-    m.update(username + title)
+    m.update(activity["id"])
     key = m.hexdigest()
     
-    act = Activity(key_name = key)
+    data = {
+      "id" : activity["id"],
+      "username": activity["actor"]["profileUrl"],
+      "shortcut" : key,
+      "title": activity["title"],
+      "data" : simplejson.dumps(activity),
+      "url" : activity["links"]["self"][0]["href"].replace("alt=json", ""),
+      "replies_url" : activity["links"]["replies"][0]["href"].replace("alt=json", ""),
+      "likes_url" : activity["links"]["liked"][0]["href"].replace("alt=json", "")
+    }
     
-    act.id = activity["id"]
-    act.data = simplejson.dumps(activity)
+    act = Activity.get_or_insert(key_name = key, **data)
     
-    act.put()

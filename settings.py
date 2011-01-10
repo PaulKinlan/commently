@@ -18,7 +18,7 @@ DEFAULT_HUB = "http://pubsubhubbub.appspot.com/"
 # Each Buzz Activity is a pretty static URL.
 ACTIVITY_URL = "https://www.googleapis.com/buzz/v1/activities/%s/@self/%s/@comments"
 
-CALLBACK_URL = "/pubsub/callback"
+CALLBACK_URL = "https://commently.appspot.com/pubsub/callback"
 
 # Should anyone be able to add/delete subscriptions or should access be restricted to admins
 OPEN_ACCESS = False
@@ -33,8 +33,10 @@ MAX_FETCH = 500
 SHOULD_VERIFY_INCOMING_POSTS = False
 
 # Buzz API endpoint
-BUZZ_ACTIVITIES = "https://www.googleapis.com/buzz/v1/activities/%s/@public?"
+BUZZ_ACTIVITIES = "https://www.googleapis.com/buzz/v1/activities/%s/@public"
 
+
+PROFILE_URL_ROOT = "http://www.google.com/profiles/"
 
 # Installation specific config ends.
 
