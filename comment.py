@@ -28,93 +28,7 @@ import logging
 import urllib
 import os
 import model
-
-class BuzzProcess(object):
-  
-  def FetchData(self, username):
-    return self.Fetch((settings.BUZZ_ACTIVITIES + "?") % (username))
-    
-  def GetProperty(self, prop, data):
-    props = prop.replace(".", "\"][\"")
-    
-    command = "data[\"%s\"]" % props
-    logging.info(command)
-    return eval(command )
-  
-  def Fetch(self, url):
-    
-    params = {
-      "alt" : "json",
-      "max-results" : settings.MAX_FETCH,
-      "max-comments" : settings.MAX_FETCH,
-      "max-liked" : settings.MAX_FETCH,
-      "key" : settings.API_KEY
-    }
-    
-    requestUrl = url + "&" + urllib.urlencode(params)
-    
-    result = urlfetch.fetch(requestUrl, deadline = 30)
-    data = result.content
-    
-    return simplejson.loads(data)
-  
-  #@decorators.cache("BuzzProcess.FindActivity")
-  def FindActivity(self, *args, **kwargs):
-    '''
-    Finds an activity, once it is in the datastore, we never fetch it again,
-    rather we subscribe to its pubsub feed.
-    '''
-    
-    username = kwargs["actor.profileUrl"].replace(settings.PROFILE_URL_ROOT, "")
-    
-    logging.info(username)
-    
-    # get activity from data store,
-    activity = model.Activity.Get(**kwargs)
-    
-    if activity:
-      return simplejson.loads(activity.data)
-    
-    # nothing in the datastore, so lets fetch it.
-    activities = self.FetchData(username)
-    
-    if not activities and not activities["data"]:
-      return None
-    
-    data = activities["data"]["items"];
-    for activity in data:
-      # This is litterally the first bit that can't be done in JSONp
-      mustAdd = False
-      # exact match the attributes
-      for attr in kwargs:
-        if self.GetProperty(attr, activity) == kwargs[attr]:
-          # We have a match, save the data for later
-          mustAdd = True
-        else:
-          mustAdd = False
-       
-      if mustAdd: 
-        model.Activity.Put(activity)
-        # Send off a task to handle pubsub
-        taskqueue.add(
-          queue_name = "subscribe",
-          url = '/tasks/feed/subscribe',
-          params = { 
-            "url" : (settings.BUZZ_ACTIVITIES + "?") % username
-          })
-      
-        return activity
-    return None
-  
-  @decorators.cache("BuzzProcess.GetLikes")
-  def GetLikes(self, activity):
-    url = activity["links"]["liked"][0]["href"] 
-    return self.Fetch(url)
-    
-  @decorators.cache("BuzzProcess.GetReplies")
-  def GetReplies(self, activity):
-    url = activity["links"]["replies"][0]["href"]
-    return self.Fetch(url)
+from buzzprocess import BuzzProcess
 
 class CommentHandler(webapp.RequestHandler):
   def buildArgsDict(self):
@@ -128,7 +42,6 @@ class CommentHandler(webapp.RequestHandler):
         
       arguments[str(arg)] = urllib.unquote(self.request.get(arg))
       
-    logging.info(arguments)
     return arguments
   
   def getActivity(self, *args, **kwargs):

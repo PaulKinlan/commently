@@ -2,6 +2,7 @@ from google.appengine.ext import db
 
 import hashlib
 import simplejson
+import settings
 
 class Activity(db.Model):
   '''
@@ -21,9 +22,12 @@ class Activity(db.Model):
   def Get(*args, **kwargs):
     q = db.Query(Activity)
     
+    
     # build the filter dynamically, have to watch out for index errors.
     for key in kwargs:
-      q = q.filter("%s =" % key, kwargs[key])
+      if key in settings.FILTER_MAP:
+        newKey = settings.FILTER_MAP[key]
+        q = q.filter("%s =" % newKey, kwargs[key])
     
     return q.get()
     
