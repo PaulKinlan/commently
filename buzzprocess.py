@@ -104,7 +104,7 @@ class BuzzProcess(object):
           queue_name = "subscribe",
           url = '/tasks/feed/subscribe',
           params = { 
-            "url" : activity["links"]["replies"][0]["href"]
+            "url" : activity["links"]["replies"][0]["href"].replace("?alt=json","")
           })
         
         return activity
