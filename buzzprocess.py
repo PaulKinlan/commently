@@ -100,5 +100,12 @@ class BuzzProcess(object):
             "url" : (settings.BUZZ_ACTIVITIES + "?") % username
           })
       
+        taskqueue.add(
+          queue_name = "subscribe",
+          url = '/tasks/feed/subscribe',
+          params = { 
+            "url" : activity["links"]["replies"][0]["href"]
+          })
+        
         return activity
     return None
