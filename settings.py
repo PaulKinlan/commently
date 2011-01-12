@@ -4,7 +4,7 @@
 APP_NAME = "commently"
 
 # API KEY - You can get this from https://code.google.com/apis/console/
-API_KEY = "AIzaSyBGYUpp_29eSJAElzJa0b33XXz98xft7LU"
+API_KEY = ""
 
 # This is the token that will act as a shared secret to verify that this application is the one that registered the given subscription. The hub will send us a challenge containing this token.
 SECRET_TOKEN = "SOME_SECRET_TOKEN"
@@ -18,7 +18,7 @@ DEFAULT_HUB = "http://pubsubhubbub.appspot.com/"
 # Each Buzz Activity is a pretty static URL.
 ACTIVITY_URL = "https://www.googleapis.com/buzz/v1/activities/%s/@self/%s/@comments"
 
-CALLBACK_URL = "https://commently.appspot.com/pubsub/callback"
+CALLBACK_URL = "https://%s.appspot.com/pubsub/callback" % APP_NAME
 
 # Should anyone be able to add/delete subscriptions or should access be restricted to admins
 OPEN_ACCESS = False
