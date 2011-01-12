@@ -30,6 +30,8 @@ import os
 import model
 from pshb import HubSubscriber
 
+from buzzprocess import BuzzProcess
+
 class PubsubSubscribeHandler(webapp.RequestHandler):
   def post(self):
     '''
@@ -43,3 +45,14 @@ class PubsubSubscribeHandler(webapp.RequestHandler):
     
     subscriber = HubSubscriber()
     subscriber.subscribe(url, hub, settings.CALLBACK_URL)
+    
+class FetchActivityHandler(webapp.RequestHandler):
+  def post(self):
+    '''
+    We handle all requests to subscribe to an activity here
+    '''
+    url = self.request.get("url")
+
+    process = BuzzProcess()
+    process.Fetch(url)
+    

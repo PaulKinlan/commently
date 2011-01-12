@@ -38,5 +38,10 @@ BUZZ_ACTIVITIES = "https://www.googleapis.com/buzz/v1/activities/%s/@public"
 
 PROFILE_URL_ROOT = "http://www.google.com/profiles/"
 
+FILTER_MAP = {
+  "actor.profileUrl" : "username",
+  "id" : "id"
+}
+
 # Installation specific config ends.
 

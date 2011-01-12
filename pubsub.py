@@ -57,17 +57,17 @@ class PubsubHandler(webapp.RequestHandler):
     New content has been pushed to the hub.  Invalidate the cache, and other 
     things
     '''
-    logging.info(self.request)
     
     # data is delievered by xml so involke the power of feedparser
     content = ContentParser(self.request.body)
     article = content.extractPosts()[0].getFeedParserEntry()
     
     id = article["id"]
-    #username = article["username"]
-    #title = article["title"]
     
     activity = model.Activity.Get({"id" : id})
     if activity:
       activity.delete()
+      
+    # We should probably go and schedule a fetch of the data because it might 
+    # be an article we have not seen before.
     
