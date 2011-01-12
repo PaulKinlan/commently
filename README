@@ -1,0 +1,10 @@
+To make this project work for you
+
+1) Get yourself an .appspot.com instance
+2) Get yourself a API key for Buzz from https://code.google.com/apis/console/
+3) Change app.yaml to have the application line refer to the instance name from step 1
+4) Change settings.py:
+  a) APP_NAME to refer to instance name from step 1
+  b) API_KEY to refer to the key requested in step 2
+  c) SECRET_TOKEN to a unique private value
+  d) CALLBACK_URL to refer to your application's full externally visible url 
