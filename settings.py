@@ -4,7 +4,7 @@
 APP_NAME = "commently"
 
 # API KEY - You can get this from https://code.google.com/apis/console/
-API_KEY = ""
+API_KEY = "AIzaSyBGYUpp_29eSJAElzJa0b33XXz98xft7LU"
 
 # This is the token that will act as a shared secret to verify that this application is the one that registered the given subscription. The hub will send us a challenge containing this token.
 SECRET_TOKEN = "SOME_SECRET_TOKEN"
