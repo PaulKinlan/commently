@@ -2,7 +2,7 @@
   {% for reply in object.comments %}
   <div class="buzz-comment">
     <img src="{{reply.actor.thumbnailUrl}}" class="buzz-actor">
-    <div class="buzz-name"><a href="{{reply.actor.name}}">{{reply.actor.profileUrl}}</a></div>
+    <div class="buzz-name"><a href="{{reply.actor.profileUrl}}">{{reply.actor.name}}</a></div>
     <div class="buzz-content">{{reply.content}}</div>
     <br>
   </div>
