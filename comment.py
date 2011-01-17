@@ -83,6 +83,7 @@ class HTMLCommentHandler(CommentHandler):
     logging.info("ARGS %s" % dictArgs)
     
     activity = self.getActivity(**dictArgs)
+    logging.info("Activity %s" % activity)
     
     path = os.path.join(os.path.dirname(__file__), "templates" ,'comments.tmpl')
     output = template.render(path, activity)

@@ -51,7 +51,7 @@ class BuzzProcess(object):
     }
     
     requestUrl = url + "&" + urllib.urlencode(params)
-    
+    logging.info("requesting %s" % requestUrl)
     result = urlfetch.fetch(requestUrl, deadline = 30)
     data = result.content
     
@@ -65,22 +65,18 @@ class BuzzProcess(object):
     '''
     
     username = kwargs["actor.profileUrl"].replace(settings.PROFILE_URL_ROOT, "")
-    
-    # get activity from data store,
-    activity = model.Activity.Get(**kwargs)
-    
-    if activity:
-      return simplejson.loads(activity.data)
-    
-    # nothing in the datastore, so lets fetch it.
+        
     activities = self.FetchData(username)
-    
-    if not activities and not activities["data"]:
+    logging.info("Activities fetched: %s" % activities)
+
+    try:
+      data = activities["data"]["items"];
+    except KeyError:
+      logging.error("No activities retrieved for %s" % username)
       return None
-    
-    data = activities["data"]["items"];
+
     for activity in data:
-      # This is litterally the first bit that can't be done in JSONp
+      # This is literally the first bit that can't be done in JSONp
       mustAdd = False
       # exact match the attributes
       for attr in kwargs:
